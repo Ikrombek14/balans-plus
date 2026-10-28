@@ -1,0 +1,1563 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Balans Plus | Kichik biznes va YaTTlar uchun professional buxgalteriya</title>
+  <meta name="description" content="Kichik biznes, MChJ va YaTTlar uchun professional buxgalteriya xizmatlari. Soliq hisobotlari, ish haqi hisobi va to'liq buxgalteriya autsorsingi.">
+  
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       1. VARIABLES & RESET
+       ========================================================================== */
+    :root {
+      --bg-dark: #0b152d;
+      --bg-darker: #070d1d;
+      --bg-card: rgba(18, 30, 58, 0.7);
+      --bg-card-hover: rgba(24, 40, 78, 0.9);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-focus: rgba(16, 185, 129, 0.4);
+
+      --primary: #10b981;
+      --primary-hover: #059669;
+      --primary-light: rgba(16, 185, 129, 0.12);
+      --primary-glow: rgba(16, 185, 129, 0.35);
+
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+
+      --font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --container-max: 1200px;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 22px;
+      --shadow-card: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-family);
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      line-height: 1.6;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(16, 185, 129, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 85% 65%, rgba(16, 185, 129, 0.06) 0%, transparent 45%);
+      background-attachment: fixed;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+      transition: var(--transition);
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    img, svg {
+      vertical-align: middle;
+    }
+
+    .container {
+      width: 100%;
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .section-title-wrap {
+      text-align: center;
+      max-width: 680px;
+      margin: 0 auto 56px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border-radius: 9999px;
+      background: var(--primary-light);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: var(--primary);
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .badge::before {
+      content: '';
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--primary);
+      box-shadow: 0 0 10px var(--primary);
+    }
+
+    .section-title {
+      font-size: 2.25rem;
+      font-weight: 800;
+      line-height: 1.25;
+      margin-bottom: 16px;
+      color: var(--text-main);
+    }
+
+    .section-title span {
+      background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .section-desc {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 13px 28px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: var(--transition);
+      border: 1px solid transparent;
+      outline: none;
+      font-family: inherit;
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: #0b152d;
+      box-shadow: 0 4px 18px var(--primary-glow);
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-hover);
+      color: #ffffff;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px var(--primary-glow);
+    }
+
+    .btn-outline {
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+    }
+
+    .btn-outline:hover {
+      background: rgba(255, 255, 255, 0.09);
+      border-color: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+    }
+
+    /* ==========================================================================
+       2. HEADER / NAVBAR
+       ========================================================================== */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(11, 21, 45, 0.85);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border-color);
+      transition: var(--transition);
+    }
+
+    .nav-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 76px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .logo-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #10b981 0%, #047857 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      box-shadow: 0 4px 14px var(--primary-glow);
+    }
+
+    .logo-text span {
+      color: var(--primary);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .nav-link {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+
+    .nav-link:hover {
+      color: var(--primary);
+    }
+
+    .nav-cta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--text-main);
+      cursor: pointer;
+      padding: 8px;
+    }
+
+    /* ==========================================================================
+       3. HERO SECTION
+       ========================================================================== */
+    .hero {
+      padding: 80px 0 90px;
+      position: relative;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 50px;
+      align-items: center;
+    }
+
+    .hero-content h1 {
+      font-size: 3.1rem;
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.8px;
+      margin-bottom: 22px;
+    }
+
+    .hero-content h1 span {
+      background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      margin-bottom: 34px;
+      max-width: 540px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      padding-top: 28px;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .stat-item h3 {
+      font-size: 1.85rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 4px;
+    }
+
+    .stat-item h3 span {
+      color: var(--primary);
+    }
+
+    .stat-item p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    /* Hero Visual Card */
+    .hero-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      backdrop-filter: blur(16px);
+      box-shadow: var(--shadow-card);
+      position: relative;
+    }
+
+    .hero-card::after {
+      content: '';
+      position: absolute;
+      top: -1px;
+      right: 15%;
+      width: 40%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--primary), transparent);
+    }
+
+    .hero-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .hero-card-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .status-pill {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 99px;
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--primary);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .hero-feature-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .hero-feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 12px 14px;
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      transition: var(--transition);
+    }
+
+    .hero-feature-item:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(16, 185, 129, 0.2);
+    }
+
+    .feature-check {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--primary-light);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .hero-feature-item strong {
+      display: block;
+      font-size: 0.95rem;
+      color: var(--text-main);
+      margin-bottom: 2px;
+    }
+
+    .hero-feature-item span {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    /* ==========================================================================
+       4. SERVICES SECTION
+       ========================================================================== */
+    .services {
+      padding: 100px 0;
+      background-color: var(--bg-darker);
+      position: relative;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .service-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 32px 28px;
+      transition: var(--transition);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .service-card:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-focus);
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.6);
+    }
+
+    .service-icon-box {
+      width: 54px;
+      height: 54px;
+      border-radius: 12px;
+      background: var(--primary-light);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 22px;
+      border: 1px solid rgba(16, 185, 129, 0.25);
+    }
+
+    .service-card h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: var(--text-main);
+    }
+
+    .service-card p {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+      flex-grow: 1;
+    }
+
+    .service-bullets {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: auto;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .service-bullets li {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      color: #cbd5e1;
+    }
+
+    .service-bullets li svg {
+      color: var(--primary);
+      flex-shrink: 0;
+    }
+
+    /* ==========================================================================
+       5. WHY US SECTION
+       ========================================================================== */
+    .why-us {
+      padding: 100px 0;
+      position: relative;
+    }
+
+    .why-us-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+
+    .why-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 30px 24px;
+      text-align: left;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .why-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: transparent;
+      transition: var(--transition);
+    }
+
+    .why-card:hover {
+      border-color: rgba(16, 185, 129, 0.4);
+      transform: translateY(-4px);
+    }
+
+    .why-card:hover::before {
+      background: linear-gradient(90deg, #10b981, #34d399);
+    }
+
+    .why-number {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: rgba(16, 185, 129, 0.25);
+      margin-bottom: 12px;
+      line-height: 1;
+      font-feature-settings: "tnum";
+    }
+
+    .why-card h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--text-main);
+    }
+
+    .why-card p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* Highlight Banner */
+    .guarantee-banner {
+      margin-top: 50px;
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.12) 0%, rgba(11, 21, 45, 0.6) 100%);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      border-radius: var(--radius-lg);
+      padding: 32px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .guarantee-content {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .guarantee-shield {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      background: var(--primary);
+      color: #0b152d;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .guarantee-text h4 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 4px;
+    }
+
+    .guarantee-text p {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+    }
+
+    /* ==========================================================================
+       6. APPLICATION FORM SECTION (#ariza)
+       ========================================================================== */
+    .ariza-section {
+      padding: 100px 0;
+      background-color: var(--bg-darker);
+      position: relative;
+    }
+
+    .form-wrapper {
+      max-width: 760px;
+      margin: 0 auto;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 44px;
+      box-shadow: 0 20px 45px -15px rgba(0, 0, 0, 0.6);
+      position: relative;
+    }
+
+    .form-wrapper::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 10%;
+      right: 10%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--primary), transparent);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-group.full-width {
+      grid-column: span 2;
+    }
+
+    .form-label {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #cbd5e1;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .required-star {
+      color: #ef4444;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 14px 16px;
+      background: rgba(11, 21, 45, 0.8);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      color: var(--text-main);
+      font-size: 0.95rem;
+      font-family: inherit;
+      transition: var(--transition);
+      outline: none;
+    }
+
+    .form-control:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-light);
+      background: rgba(11, 21, 45, 1);
+    }
+
+    .form-control::placeholder {
+      color: var(--text-dim);
+    }
+
+    select.form-control {
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      padding-right: 42px;
+    }
+
+    select.form-control option {
+      background-color: #0b152d;
+      color: var(--text-main);
+    }
+
+    textarea.form-control {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    /* Invisible Honeypot anti-spam field */
+    .hp-field {
+      display: none !important;
+      visibility: hidden !important;
+      opacity: 0 !important;
+      position: absolute !important;
+      left: -9999px !important;
+      height: 0 !important;
+      width: 0 !important;
+      z-index: -1 !important;
+    }
+
+    .form-note {
+      font-size: 0.8rem;
+      color: var(--text-dim);
+      text-align: center;
+      margin-top: 14px;
+    }
+
+    .form-success-banner {
+      display: none;
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid var(--primary);
+      border-radius: var(--radius-sm);
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      color: #34d399;
+      font-weight: 500;
+      text-align: center;
+      animation: fadeIn 0.4s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ==========================================================================
+       7. FOOTER
+       ========================================================================== */
+    .site-footer {
+      background-color: #050b18;
+      border-top: 1px solid var(--border-color);
+      padding: 70px 0 30px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
+      gap: 40px;
+      margin-bottom: 50px;
+    }
+
+    .footer-about p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-top: 16px;
+      line-height: 1.6;
+      max-width: 320px;
+    }
+
+    .footer-col h4 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .footer-links a {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .footer-links a:hover {
+      color: var(--primary);
+      padding-left: 4px;
+    }
+
+    .footer-contact-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 14px;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .footer-contact-item svg {
+      color: var(--primary);
+      flex-shrink: 0;
+      margin-top: 3px;
+    }
+
+    .footer-bottom {
+      padding-top: 28px;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      font-size: 0.85rem;
+      color: var(--text-dim);
+    }
+
+    /* ==========================================================================
+       8. RESPONSIVE MEDIA QUERIES
+       ========================================================================== */
+    @media (max-width: 1024px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+      .services-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .why-us-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .footer-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .hero {
+        padding: 50px 0 70px;
+      }
+      .hero-content h1 {
+        font-size: 2.3rem;
+      }
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 76px;
+        left: 0;
+        right: 0;
+        background: #0b152d;
+        flex-direction: column;
+        padding: 24px;
+        border-bottom: 1px solid var(--border-color);
+        gap: 20px;
+      }
+      .nav-links.active {
+        display: flex;
+      }
+      .mobile-menu-btn {
+        display: block;
+      }
+      .nav-cta .btn {
+        display: none;
+      }
+      .services-grid {
+        grid-template-columns: 1fr;
+      }
+      .why-us-grid {
+        grid-template-columns: 1fr;
+      }
+      .guarantee-banner {
+        flex-direction: column;
+        text-align: center;
+        padding: 28px 20px;
+      }
+      .guarantee-content {
+        flex-direction: column;
+      }
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+      .form-group.full-width {
+        grid-column: span 1;
+      }
+      .form-wrapper {
+        padding: 28px 20px;
+      }
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+      .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ================= HEADER / NAVBAR ================= -->
+  <header class="site-header">
+    <div class="container nav-wrapper">
+      <a href="#" class="logo">
+        <div class="logo-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+          </svg>
+        </div>
+        <div class="logo-text">Balans<span>Plus</span></div>
+      </a>
+
+      <nav class="nav-links" id="navLinks">
+        <a href="#xizmatlar" class="nav-link">Xizmatlar</a>
+        <a href="#nega-biz" class="nav-link">Nega biz?</a>
+        <a href="#kafolat" class="nav-link">Kafolat</a>
+        <a href="#ariza" class="nav-link">Ariza qoldirish</a>
+      </nav>
+
+      <div class="nav-cta">
+        <a href="#ariza" class="btn btn-primary">Konsultatsiya olish</a>
+        <button class="mobile-menu-btn" id="mobileMenuToggle" aria-label="Menyu">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ================= HERO SECTION ================= -->
+    <section class="hero">
+      <div class="container">
+        <div class="hero-grid">
+          
+          <div class="hero-content">
+            <div class="badge">Buxgalteriya autsorsingi</div>
+            <h1>Kichik biznes va YaTTlar uchun <span>ishonchli buxgalteriya</span> xizmatlari</h1>
+            <p class="hero-subtitle">
+              Soliq tekshiruvlari va jarimalarni unuting. Biz hisobotlarni o'z vaqtida topshiramiz, siz esa biznesingizni xotirjam rivojlantirasiz.
+            </p>
+
+            <div class="hero-buttons">
+              <a href="#ariza" class="btn btn-primary">
+                <span>Bepul konsultatsiya</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </a>
+              <a href="#xizmatlar" class="btn btn-outline">Xizmatlar bilan tanishish</a>
+            </div>
+
+            <div class="hero-stats">
+              <div class="stat-item">
+                <h3>150<span>+</span></h3>
+                <p>Doimiy mijozlar (MChJ va YaTT)</p>
+              </div>
+              <div class="stat-item">
+                <h3>0 <span>so'm</span></h3>
+                <p>Mijozlarimiz to'lagan soliq jarimasi</p>
+              </div>
+              <div class="stat-item">
+                <h3>8<span>+ yil</span></h3>
+                <p>Bozorda professional amaliy tajriba</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hero Visual Feature Box -->
+          <div class="hero-card">
+            <div class="hero-card-header">
+              <div class="hero-card-title">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
+                <span>Biz bilan nimalarga ega bo'lasiz?</span>
+              </div>
+              <span class="status-pill">Faol nazorat</span>
+            </div>
+
+            <div class="hero-feature-list">
+              <div class="hero-feature-item">
+                <div class="feature-check">✓</div>
+                <div>
+                  <strong>Soliq xavflarini 0 ga tushirish</strong>
+                  <span>Barcha hisob-kitoblar qonuniy va xatosiz bajariladi</span>
+                </div>
+              </div>
+
+              <div class="hero-feature-item">
+                <div class="feature-check">✓</div>
+                <div>
+                  <strong>60% gacha xarajatlarni tejash</strong>
+                  <span>Shtatdagi qimmat buxgalter va ish o'rni saqlashga hojat yo'q</span>
+                </div>
+              </div>
+
+              <div class="hero-feature-item">
+                <div class="feature-check">✓</div>
+                <div>
+                  <strong>1C va Elektron hisob-faktura (Didox)</strong>
+                  <span>Hujjatlar to'liq avtomatlashtirilgan tartibda yuritiladi</span>
+                </div>
+              </div>
+
+              <div class="hero-feature-item">
+                <div class="feature-check">✓</div>
+                <div>
+                  <strong>Shartnoma asosida moddiy kafolat</strong>
+                  <span>Agar xatolik bizdan bo'lsa — jarimani o'z hisobimizdan qoplaymiz</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= SERVICES SECTION ================= -->
+    <section class="services" id="xizmatlar">
+      <div class="container">
+        
+        <div class="section-title-wrap">
+          <div class="badge">Xizmatlarimiz</div>
+          <h2 class="section-title">Biznesingiz uchun <span>to'liq buxgalteriya</span> yechimlari</h2>
+          <p class="section-desc">Kichik korxonalar, servis markazlari, savdo do'konlari va YaTTlar uchun barcha turdagi moliyaviy va soliq amallari.</p>
+        </div>
+
+        <div class="services-grid">
+          
+          <!-- Xizmat 1 -->
+          <div class="service-card">
+            <div class="service-icon-box">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+                <polyline points="10 9 9 9 8 9"></polyline>
+              </svg>
+            </div>
+            <h3>Soliq hisobotlari</h3>
+            <p>Oylik, choraklik va yillik soliq hisobotlarini (QQS, Foyda, Aylanma solig'i, JSHODS) qonuniy va o'z vaqtida topshirish.</p>
+            <ul class="service-bullets">
+              <li>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                O'z vaqtida jo'natish kafolati
+              </li>
+              <li>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                Soliq.uz va My.soliq kabineti bilan ishlash
+              </li>
+            </ul>
+          </div>
+
+          <!-- Xizmat 2 -->
+          <div class="service-card">
+            <div class="service-icon-box">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                <line x1="6" y1="12" x2="18" y2="12"></line>
+                <line x1="6" y1="8" x2="10" y2="8"></line>
+                <line x1="6" y1="16" x2="14" y2="16"></line>
+              </svg>
+            </div>
+            <h3>Ish haqi va kadrlar hisobi</h3>
+            <p>Xodimlar oylik maoshi, mukofotlar, kasallik va mehnat ta'tili pullarini to'g'ri hisoblash va bank orqali tarqatish.</p>
+            <ul class="service-bullets">
+              <li>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                Mehnat.uz (YAMMT) tizimi integratsiyasi
+              </li>
+              <li>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                INPS va pensiya jamg'armasi hisob-kitoblari
+              </li>
+            </ul>
+          </div>
+
+          <!-- Xizmat 3 -->
+          <div class="service-card">
+            <div class="service-icon-box">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                <line x1="12" y1="22.08" x2="12" y2="12"></line>
+              </svg>
+            </div>
+            <h3>To'liq buxgalteriya yuritish</h3>
+            <p>Birlamchi hujjatlardan boshlab to yakuniy balansgacha bo'lgan barcha jarayonlarni to'liq o'z zimmamizga olamiz.</p>
+            <ul class="service-bullets">
+              <li>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                Bank-klient to'lovlarini amalga oshirish
+              </li>
+              <li>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                1C bazasini to'liq yuritish
+              </li>
+            </ul>
+          </div>
+
+          <!-- Xizmat 4 -->
+          <div class="service-card">
+            <div class="service-icon-box">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+            </div>
+            <h3>YaTTlar uchun maxsus tarif</h3>
+            <p>Yakka tartibdagi tadbirkorlar uchun qat'iy belgilangan va aylanmadan soliq to'lovlarini hisoblash va hisobotlar.</p>
+            <ul class="service-bullets">
+              <li>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                Soddalashtirilgan hujjat aylanishi
+              </li>
+              <li>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                Eng maqbul oylik tariflar
+              </li>
+            </ul>
+          </div>
+
+          <!-- Xizmat 5 -->
+          <div class="service-card">
+            <div class="service-icon-box">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="23 4 23 10 17 10"></polyline>
+                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+              </svg>
+            </div>
+            <h3>Buxgalteriyani tiklash</h3>
+            <p>Oldingi davrlarda tashlab qo'yilgan, chalkashib ketgan yoki xatolari bo'lgan hisob-kitoblarni 0 dan tartibga solish.</p>
+            <ul class="service-bullets">
+              <li>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                Qayta ko'rib chiqilgan hisobotlar
+              </li>
+              <li>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                Audit xulosasi va tavsiyalar
+              </li>
+            </ul>
+          </div>
+
+          <!-- Xizmat 6 -->
+          <div class="service-card">
+            <div class="service-icon-box">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+              </svg>
+            </div>
+            <h3>Soliq maslahati va optimallashtirish</h3>
+            <p>Qonun doirasida soliqlarni kamaytirish usullari, biznesni to'g'ri tashkil etish va shartnomalar tahlili.</p>
+            <ul class="service-bullets">
+              <li>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                Shaxsiy soliq maslahatchisi
+              </li>
+              <li>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                Tezkor operativ javoblar
+              </li>
+            </ul>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================= WHY US SECTION ================= -->
+    <section class="why-us" id="nega-biz">
+      <div class="container">
+        
+        <div class="section-title-wrap">
+          <div class="badge">Nega aynan biz?</div>
+          <h2 class="section-title">Biznesingizni <span>ishonchli qo'llarga</span> topshiring</h2>
+          <p class="section-desc">Biz faqat raqamlar bilan cheklanmaymiz, balki sizning biznesingiz barqarorligi va qonuniy xavfsizligi uchun javobgarmiz.</p>
+        </div>
+
+        <div class="why-us-grid">
+          
+          <div class="why-card">
+            <div class="why-number">01</div>
+            <h3>100% Moddiy kafolat</h3>
+            <p>Xizmat ko'rsatish shartnomasida moddiy javobgarlik belgilangan. Agar bizning aybimiz bilan jarima qo'llanilsa, uni to'liq o'z zimmamizga olamiz.</p>
+          </div>
+
+          <div class="why-card">
+            <div class="why-number">02</div>
+            <h3>Sertifikatlangan mutaxassislar</h3>
+            <p>Jamoamizda CAP, CIPA va Milliy buxgalteriya sertifikatlariga ega, doimiy qonunchilik yangiliklarini kuzatib boruvchi mutaxassislar ishlaydi.</p>
+          </div>
+
+          <div class="why-card">
+            <div class="why-number">03</div>
+            <h3>Qat'iy maxfiylik (NDA)</h3>
+            <p>Mijozlarimizning moliyaviy ma'lumotlari, aylanmalari va tijoriy sirlari qat'iy himoyalangan va begona ko'zlardan yiroq saqlanadi.</p>
+          </div>
+
+          <div class="why-card">
+            <div class="why-number">04</div>
+            <h3>Shaffof va hamyonbop narxlar</h3>
+            <p>Hech qanday yashirin to'lovlarsiz. Biznesingiz hajmi va operatsiyalari soniga qarab eng adolatli va foydali tarifni taklif qilamiz.</p>
+          </div>
+
+        </div>
+
+        <!-- Guarantee Highlight Box -->
+        <div class="guarantee-banner" id="kafolat">
+          <div class="guarantee-content">
+            <div class="guarantee-shield">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                <polyline points="9 12 11 14 15 10"/>
+              </svg>
+            </div>
+            <div class="guarantee-text">
+              <h4>Rasmiy shartnoma va to'liq yuridik himoya</h4>
+              <p>Har bir mijoz bilan qonuniy shartnoma tuziladi. Bizning buxgalterlarimiz kasallikka chiqib qolishi yoki ta'tilga ketishi sizning hisobotlaringizga ta'sir qilmaydi.</p>
+            </div>
+          </div>
+          <a href="#ariza" class="btn btn-primary" style="white-space: nowrap;">Xizmatni boshlash</a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================= APPLICATION FORM SECTION (#ariza) ================= -->
+    <section class="ariza-section" id="ariza">
+      <div class="container">
+        
+        <div class="section-title-wrap">
+          <div class="badge">Konsultatsiya</div>
+          <h2 class="section-title">Bepul <span>mutaxassis maslahatini</span> oling</h2>
+          <p class="section-desc">Ma'lumotlaringizni qoldiring, 15 daqiqa ichida siz bilan bog'lanib, biznesingiz uchun eng to'g'ri yechimni taklif qilamiz.</p>
+        </div>
+
+        <div class="form-wrapper">
+          
+          <div class="form-success-banner" id="formSuccess">
+            Arizangiz muvaffaqiyatli qabul qilindi! Mutaxassisimiz tez orada siz bilan bog'lanadi.
+          </div>
+
+          <form id="leadForm" onsubmit="handleFormSubmit(event)">
+            
+            <!-- Invisible Honeypot anti-spam field -->
+            <div class="hp-field">
+              <label for="honeypot_field">Iltimos, bu maydonni to'ldirmang</label>
+              <input type="text" id="honeypot_field" name="honeypot_check" tabindex="-1" autocomplete="off">
+            </div>
+
+            <div class="form-grid">
+              
+              <!-- Ism -->
+              <div class="form-group">
+                <label for="userName" class="form-label">
+                  Ismingiz <span class="required-star">*</span>
+                </label>
+                <input 
+                  type="text" 
+                  id="userName" 
+                  name="name" 
+                  class="form-control" 
+                  placeholder="Masalan: Sardor Aliyev" 
+                  required
+                >
+              </div>
+
+              <!-- Telefon raqam -->
+              <div class="form-group">
+                <label for="userPhone" class="form-label">
+                  Telefon raqamingiz <span class="required-star">*</span>
+                </label>
+                <input 
+                  type="tel" 
+                  id="userPhone" 
+                  name="phone" 
+                  class="form-control" 
+                  value="+998" 
+                  placeholder="+998 (90) 123-45-67" 
+                  required
+                >
+              </div>
+
+              <!-- Xizmat turini tanlash -->
+              <div class="form-group full-width">
+                <label for="serviceType" class="form-label">
+                  Xizmat turini tanlang <span class="required-star">*</span>
+                </label>
+                <select id="serviceType" name="service" class="form-control" required>
+                  <option value="" disabled selected>Xizmat yo'nalishini tanlang...</option>
+                  <option value="yatt">YaTTlar uchun buxgalteriya yuritish</option>
+                  <option value="mchj_full">MChJ uchun to'liq buxgalteriya autsorsingi</option>
+                  <option value="soliq">Soliq hisobotlarini tayyorlash va topshirish</option>
+                  <option value="ish_haqi">Ish haqi va kadrlar hisobini yuritish</option>
+                  <option value="tiklash">Eski buxgalteriyani tiklash va audit</option>
+                  <option value="boshqa">Boshqa / Umumiy konsultatsiya</option>
+                </select>
+              </div>
+
+              <!-- Izoh yoki savol -->
+              <div class="form-group full-width">
+                <label for="userMessage" class="form-label">
+                  Izoh yoki savolingiz (ixtiyoriy)
+                </label>
+                <textarea 
+                  id="userMessage" 
+                  name="message" 
+                  class="form-control" 
+                  placeholder="Biznes faoliyatingiz turi, ishchilar soni yoki sizni qiziqtirgan savol..."
+                ></textarea>
+              </div>
+
+              <!-- Submit button -->
+              <div class="form-group full-width">
+                <button type="submit" class="btn btn-primary" id="submitBtn" style="width: 100%; padding: 16px;">
+                  <span>Arizani yuborish</span>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                  </svg>
+                </button>
+                <p class="form-note">
+                  Tugmani bosish orqali ma'lumotlaringizning maxfiyligi kafolatlanadi. Spamsiz.
+                </p>
+              </div>
+
+            </div>
+
+          </form>
+
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="site-footer">
+    <div class="container">
+      
+      <div class="footer-grid">
+        
+        <!-- Col 1 -->
+        <div class="footer-about">
+          <a href="#" class="logo">
+            <div class="logo-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+              </svg>
+            </div>
+            <div class="logo-text">Balans<span>Plus</span></div>
+          </a>
+          <p>
+            O'zbekistondagi kichik biznes va yakka tartibdagi tadbirkorlar uchun ishonchli, xavfsiz va zamonaviy buxgalteriya autsorsing xizmatlari.
+          </p>
+        </div>
+
+        <!-- Col 2 -->
+        <div class="footer-col">
+          <h4>Bo'limlar</h4>
+          <div class="footer-links">
+            <a href="#xizmatlar">Xizmatlarimiz</a>
+            <a href="#nega-biz">Nega aynan biz?</a>
+            <a href="#kafolat">Kafolat va javobgarlik</a>
+            <a href="#ariza">Ariza yuborish</a>
+          </div>
+        </div>
+
+        <!-- Col 3 -->
+        <div class="footer-col">
+          <h4>Xizmatlar</h4>
+          <div class="footer-links">
+            <a href="#xizmatlar">YaTT hisoboti</a>
+            <a href="#xizmatlar">MChJ buxgalteriyasi</a>
+            <a href="#xizmatlar">Ish haqi va Kadrlar</a>
+            <a href="#xizmatlar">Soliq optimallashtirish</a>
+          </div>
+        </div>
+
+        <!-- Col 4 -->
+        <div class="footer-col">
+          <h4>Aloqa</h4>
+          <div class="footer-contact-item">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+            </svg>
+            <span>+998 (71) 200-00-00<br>+998 (90) 123-45-67</span>
+          </div>
+
+          <div class="footer-contact-item">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+              <polyline points="22,6 12,13 2,6"></polyline>
+            </svg>
+            <span>info@balansplus.uz</span>
+          </div>
+
+          <div class="footer-contact-item">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <span>Dush - Shan: 09:00 - 18:00</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 "Balans Plus" MChJ. Barcha huquqlar himoyalangan.</div>
+        <div>Toshkent shahri, O'zbekiston</div>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- ================= JAVASCRIPT LOGIC ================= -->
+  <script>
+    // 1. Mobile Menu Toggle
+    const mobileMenuBtn = document.getElementById('mobileMenuToggle');
+    const navLinks = document.getElementById('navLinks');
+
+    mobileMenuBtn.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+    });
+
+    // Close mobile nav when clicking a link
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('active');
+      });
+    });
+
+    // 2. Phone input mask/formatting (+998 ...)
+    const phoneInput = document.getElementById('userPhone');
+
+    phoneInput.addEventListener('focus', function() {
+      if (!this.value.startsWith('+998')) {
+        this.value = '+998 ';
+      }
+    });
+
+    phoneInput.addEventListener('input', function(e) {
+      let raw = this.value.replace(/[^\d+]/g, '');
+      
+      if (!raw.startsWith('+998')) {
+        raw = '+998' + raw.replace(/^\+?998?/, '');
+      }
+
+      // Max numbers check (13 chars: +998 followed by 9 digits)
+      if (raw.length > 13) {
+        raw = raw.substring(0, 13);
+      }
+
+      // Format as +998 (XX) XXX-XX-XX
+      let formatted = '+998';
+      const numbers = raw.substring(4);
+
+      if (numbers.length > 0) {
+        formatted += ' (' + numbers.substring(0, 2);
+      }
+      if (numbers.length >= 2) {
+        formatted += ') ' + numbers.substring(2, 5);
+      }
+      if (numbers.length >= 5) {
+        formatted += '-' + numbers.substring(5, 7);
+      }
+      if (numbers.length >= 7) {
+        formatted += '-' + numbers.substring(7, 9);
+      }
+
+      this.value = formatted;
+    });
+
+    // 3. Form Submit & Honeypot Anti-spam check (api/ariza.js ga yuborish)
+    async function handleFormSubmit(event) {
+      event.preventDefault();
+
+      const nameVal = document.getElementById('userName').value.trim();
+      const phoneValRaw = phoneInput.value;
+      const serviceVal = document.getElementById('serviceType').value;
+      const messageVal = document.getElementById('userMessage').value.trim();
+      const honeypotVal = document.getElementById('honeypot_field').value;
+
+      const successBanner = document.getElementById('formSuccess');
+      const submitBtn = document.getElementById('submitBtn');
+
+      // Telefon raqami uzunligini tekshirish
+      const phoneDigits = phoneValRaw.replace(/\D/g, '');
+      if (phoneDigits.length < 9) {
+        alert("Iltimos, telefon raqamingizni to'liq kiriting: +998 (XX) XXX-XX-XX");
+        phoneInput.focus();
+        return false;
+      }
+
+      // Tugmani yuklanish rejimiga o'tkazish
+      const originalText = submitBtn.innerHTML;
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span>Yuborilmoqda...</span>';
+
+      try {
+        const response = await fetch('/api/ariza', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            name: nameVal,
+            phone: phoneValRaw,
+            service: serviceVal,
+            message: messageVal,
+            honeypot_check: honeypotVal
+          })
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.success) {
+          successBanner.textContent = data.message || "Arizangiz muvaffaqiyatli qabul qilindi!";
+          successBanner.style.display = 'block';
+          document.getElementById('leadForm').reset();
+          phoneInput.value = '+998';
+
+          setTimeout(() => {
+            successBanner.style.display = 'none';
+          }, 7000);
+        } else {
+          alert(data.error || "Arizani yuborishda xatolik yuz berdi. Iltimos, qayta urinib ko'ring.");
+        }
+      } catch (err) {
+        console.error('Serverga ulanish xatosi:', err);
+        // Agar lokal fayl sifatida ochilgan bo'lsa (serverless muhitisiz) xabar berish
+        alert("Server bilan aloqa o'rnatilmadi. Sayt serverless muhitda (masalan, Vercel) ishga tushirilganligiga ishonch hosil qiling.");
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalText;
+      }
+
+      return false;
+    }
+  </script>
+</body>
+</html>
+
