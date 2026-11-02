@@ -1,7 +1,9 @@
 /**
- * "Balans Plus" - Ariza qabul qilish va Telegram Botga jo'natish Serverless funksiyasi
+ * "Balans Plus" - Ariza qabul qilish, SQL bazaga saqlash va Telegram Botga jo'natish
  * Node.js (ES Module formati)
  */
+
+import { insertAriza } from './db.js';
 
 // HTML belgilarni xavfsiz tozalash (Telegram xatolik bermasligi uchun)
 function escapeHtml(text = '') {
@@ -57,7 +59,6 @@ export default async function handler(req, res) {
     } = body || {};
 
     // 3. Xavfsizlik: Honeypot (spam botlar uchun tuzoq) tekshiruvi
-    // Agar ko'rinmas honeypot maydoni to'ldirilgan bo'lsa, xabar yubormasdan 200 qaytaramiz
     const isBot = (honeypot_check && honeypot_check.trim() !== '') || 
                   (honeypot && honeypot.trim() !== '');
 
@@ -68,20 +69,7 @@ export default async function handler(req, res) {
       });
     }
 
-    // 4. Atrof-muhit o'zgaruvchilari (Environment Variables) tekshiruvi
-    const botToken = process.env.BOT_TOKEN;
-    const chatId = process.env.CHAT_ID;
-
-    if (!botToken || !chatId) {
-      console.error('Xatolik: BOT_TOKEN yoki CHAT_ID muhit o\'zgaruvchisi topilmadi.');
-      return res.status(500).json({
-        success: false,
-        error: 'Server sozlamalarida xatolik: Telegram ma\'lumotlari sozlanmagan'
-      });
-    }
-
-    // 5. Validatsiya tekshiruvlari
-    // Ism tekshiruvi (kamida 2 ta belgi)
+    // 4. Validatsiya tekshiruvlari
     if (!name || typeof name !== 'string' || name.trim().length < 2) {
       return res.status(400).json({
         success: false,
@@ -89,7 +77,6 @@ export default async function handler(req, res) {
       });
     }
 
-    // Telefon raqami tekshiruvi (faqat raqamlari kamida 9 ta bo'lishi kerak)
     const phoneDigits = String(phone || '').replace(/\D/g, '');
     if (!phone || phoneDigits.length < 9) {
       return res.status(400).json({
@@ -98,48 +85,58 @@ export default async function handler(req, res) {
       });
     }
 
-    // Xizmat nomi
-    const formattedService = SERVICE_NAMES[service] || service || 'Ko\'rsatilmagan';
-    const cleanMessage = (message && message.trim()) ? message.trim() : 'Mavjud emas';
+    const formattedService = SERVICE_NAMES[service] || service || 'Umumiy konsultatsiya';
+    const cleanMessage = (message && message.trim()) ? message.trim() : '';
 
-    // 6. Telegram xabari matnini shakllantirish
-    const telegramText = 
-`🔔 <b>Yangi ariza</b>
+    // 5. SQL Ma'lumotlar bazasiga saqlash
+    let savedRow = null;
+    try {
+      savedRow = insertAriza({
+        name: name.trim(),
+        phone: phone.trim(),
+        service: formattedService,
+        message: cleanMessage
+      });
+    } catch (dbErr) {
+      console.error('SQL bazaga yozishda xatolik:', dbErr);
+    }
+
+    // 6. Telegram Bot API ga so'rov yuborish
+    const botToken = process.env.BOT_TOKEN;
+    const chatId = process.env.CHAT_ID;
+
+    if (botToken && chatId) {
+      try {
+        const telegramText = 
+`🔔 <b>Yangi ariza (№${savedRow?.id || '—'})</b>
 
 👤 <b>Ism:</b> ${escapeHtml(name.trim())}
 📞 <b>Telefon:</b> ${escapeHtml(phone.trim())}
 💼 <b>Xizmat:</b> ${escapeHtml(formattedService)}
-📝 <b>Izoh:</b> ${escapeHtml(cleanMessage)}`;
+📝 <b>Izoh:</b> ${escapeHtml(cleanMessage || 'Mavjud emas')}`;
 
-    // 7. Telegram Bot API ga so'rov yuborish (faqat Node.js fetch yordamida)
-    const telegramUrl = `https://api.telegram.org/bot${botToken}/sendMessage`;
-
-    const telegramResponse = await fetch(telegramUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        chat_id: chatId,
-        text: telegramText,
-        parse_mode: 'HTML'
-      })
-    });
-
-    const telegramResult = await telegramResponse.json();
-
-    if (!telegramResponse.ok || !telegramResult.ok) {
-      console.error('Telegram API xatoligi:', telegramResult);
-      return res.status(502).json({
-        success: false,
-        error: 'Telegram botiga xabar yetkazishda xatolik yuz berdi'
-      });
+        const telegramUrl = `https://api.telegram.org/bot${botToken}/sendMessage`;
+        await fetch(telegramUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            chat_id: chatId,
+            text: telegramText,
+            parse_mode: 'HTML'
+          })
+        });
+      } catch (tgErr) {
+        console.error('Telegram botiga yuborishda xatolik:', tgErr);
+      }
+    } else {
+      console.warn('Eslatma: BOT_TOKEN yoki CHAT_ID muhit o\'zgaruvchilari kiritilmagan. Ariza faqat SQL bazaga saqlandi.');
     }
 
-    // 8. Muvaffaqiyatli yakun
+    // 7. Muvaffaqiyatli yakun
     return res.status(200).json({
       success: true,
-      message: 'Arizangiz muvaffaqiyatli qabul qilindi! Tez orada mutaxassisimiz siz bilan bog\'lanadi.'
+      message: 'Arizangiz muvaffaqiyatli qabul qilindi! Tez orada mutaxassisimiz siz bilan bog\'lanadi.',
+      id: savedRow?.id
     });
 
   } catch (error) {
@@ -150,4 +147,3 @@ export default async function handler(req, res) {
     });
   }
 }
-

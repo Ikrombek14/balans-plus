@@ -1,0 +1,19 @@
+{
+  "name": "balans-plus",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Balans Plus - buxgalteriya xizmatlari va admin paneli",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "keywords": [
+    "buxgalteriya",
+    "landing-page",
+    "admin-panel",
+    "sqlite"
+  ],
+  "author": "Ikrom Bekmurodov",
+  "license": "ISC"
+}
