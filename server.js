@@ -134,3 +134,4 @@ server.listen(PORT, () => {
   console.log(`💾 SQL Baza:     SQLite (data/balans.sqlite)`);
   console.log(`==================================================\n`);
 });
+

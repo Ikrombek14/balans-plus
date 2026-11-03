@@ -170,3 +170,4 @@ export default async function handler(req, res) {
     error: 'Metod qo\'llab-quvvatlanmaydi'
   });
 }
+
