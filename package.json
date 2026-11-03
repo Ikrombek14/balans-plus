@@ -14,6 +14,8 @@
     "sqlite"
   ],
   "author": "Ikrom Bekmurodov",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "@vercel/blob": "^2.8.2"
+  }
 }
-

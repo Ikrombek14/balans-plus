@@ -84,8 +84,10 @@ export default async function handler(req, res) {
       const status = req.query?.status || 'all';
       const search = req.query?.search || '';
 
-      const arizalar = getAllArizalar({ status, search });
-      const stats = getStats();
+      const [arizalar, stats] = await Promise.all([
+        getAllArizalar({ status, search }),
+        getStats()
+      ]);
 
       return res.status(200).json({
         success: true,
@@ -112,7 +114,7 @@ export default async function handler(req, res) {
         });
       }
 
-      const updated = updateArizaStatus(id, status);
+      const updated = await updateArizaStatus(id, status);
       if (updated) {
         return res.status(200).json({
           success: true,
@@ -144,7 +146,7 @@ export default async function handler(req, res) {
         });
       }
 
-      const deleted = deleteAriza(id);
+      const deleted = await deleteAriza(id);
       if (deleted) {
         return res.status(200).json({
           success: true,

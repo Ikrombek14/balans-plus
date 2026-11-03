@@ -1,30 +1,86 @@
 /**
- * Balans Plus - SQL Ma'lumotlar bazasi (SQLite)
- * Node.js (v22+) o'rnatilgan node:sqlite moduli orqali ishlaydi (tashqi kutubxonasiz)
+ * Balans Plus - Ma'lumotlar ombori
+ * Vercel'da: Vercel Blob (private) dagi bitta arizalar.json fayli
+ * Lokal kompyuterda: SQLite (Node.js v22+ o'rnatilgan node:sqlite moduli)
+ *
+ * Vercel serverless funksiyalarida doimiy disk yo'q (/tmp har bir funksiyada alohida
+ * va vaqtinchalik), shuning uchun u yerda arizalar Blob'da saqlanadi.
  */
 
-import { DatabaseSync } from 'node:sqlite';
 import fs from 'node:fs';
 import path from 'node:path';
 
+const USE_BLOB = Boolean(process.env.BLOB_READ_WRITE_TOKEN || process.env.BLOB_STORE_ID);
+const BLOB_PATH = 'arizalar.json';
+
+// Toshkent vaqti (UTC+5) "YYYY-MM-DD HH:MM:SS" formatida (SQLite bilan bir xil)
+function tashkentNow() {
+  return new Date(Date.now() + 5 * 60 * 60 * 1000).toISOString().replace('T', ' ').slice(0, 19);
+}
+
+/* ------------------------------------------------------------------ */
+/* Vercel Blob                                                         */
+/* ------------------------------------------------------------------ */
+
+// Blob'dan arizalar faylini o'qish: { data: { nextId, items }, etag }
+async function readBlob() {
+  const { get } = await import('@vercel/blob');
+  const result = await get(BLOB_PATH, { access: 'private', useCache: false });
+  if (!result || result.statusCode !== 200) {
+    return { data: { nextId: 1, items: [] }, etag: null };
+  }
+  const text = await new Response(result.stream).text();
+  return { data: JSON.parse(text), etag: result.blob.etag };
+}
+
+/**
+ * Faylni o'qib, o'zgartirib, qayta yozish.
+ * ifMatch (ETag) tufayli bir vaqtda kelgan ikki so'rov bir-birining yozganini o'chirib yubormaydi:
+ * agar fayl orada o'zgargan bo'lsa, qaytadan o'qib, amalni takrorlaymiz.
+ */
+async function mutateBlob(mutator) {
+  const { put, BlobPreconditionFailedError } = await import('@vercel/blob');
+
+  const MAX_ATTEMPTS = 10;
+
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    const { data, etag } = await readBlob();
+    const result = mutator(data);
+
+    try {
+      await put(BLOB_PATH, JSON.stringify(data), {
+        access: 'private',
+        contentType: 'application/json',
+        addRandomSuffix: false,
+        cacheControlMaxAge: 60,
+        ...(etag ? { ifMatch: etag } : { allowOverwrite: false })
+      });
+      return result;
+    } catch (err) {
+      // ETag mos kelmadi yoki fayl birinchi marta yaratilayotganda boshqa so'rov ulgurdi
+      const conflict = err instanceof BlobPreconditionFailedError || !etag;
+      if (!conflict || attempt === MAX_ATTEMPTS) throw err;
+      // Raqobatchi so'rovlar bir vaqtda qayta urinmasligi uchun tasodifiy kutish
+      await new Promise(resolve => setTimeout(resolve, 30 + Math.random() * 120 * attempt));
+    }
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* SQLite (lokal)                                                      */
+/* ------------------------------------------------------------------ */
+
 let dbInstance = null;
 
-export function getDb() {
+async function getDb() {
   if (dbInstance) {
     return dbInstance;
   }
 
-  // Ma'lumotlar bazasi fayl yo'li
-  let dbPath = process.env.DATABASE_PATH;
+  const { DatabaseSync } = await import('node:sqlite');
 
-  if (!dbPath) {
-    // Vercel serverless muhitida faqat /tmp papkasi yozish uchun ochiq
-    if (process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME) {
-      dbPath = '/tmp/balans.sqlite';
-    } else {
-      dbPath = path.join(process.cwd(), 'data', 'balans.sqlite');
-    }
-  }
+  // Ma'lumotlar bazasi fayl yo'li
+  const dbPath = process.env.DATABASE_PATH || path.join(process.cwd(), 'data', 'balans.sqlite');
 
   const dir = path.dirname(dbPath);
   if (!fs.existsSync(dir)) {
@@ -49,39 +105,56 @@ export function getDb() {
   return dbInstance;
 }
 
+/* ------------------------------------------------------------------ */
+/* Umumiy API (ikkala ombor uchun bir xil)                             */
+/* ------------------------------------------------------------------ */
+
 /**
- * Yangi arizani SQL jadvaliga saqlash
+ * Yangi arizani saqlash
  */
-export function insertAriza({ name, phone, service, message }) {
-  const db = getDb();
-  const stmt = db.prepare(`
-    INSERT INTO arizalar (name, phone, service, message, status, created_at)
-    VALUES (?, ?, ?, ?, 'yangi', datetime('now', '+5 hours'))
-  `);
-
-  const result = stmt.run(
-    name.trim(),
-    phone.trim(),
-    service || 'Umumiy konsultatsiya',
-    message ? message.trim() : ''
-  );
-
-  return {
-    id: Number(result.lastInsertRowid),
-    name,
-    phone,
-    service,
-    message,
+export async function insertAriza({ name, phone, service, message }) {
+  const row = {
+    name: name.trim(),
+    phone: phone.trim(),
+    service: service || 'Umumiy konsultatsiya',
+    message: message ? message.trim() : '',
     status: 'yangi'
   };
+
+  if (USE_BLOB) {
+    return mutateBlob(data => {
+      const saved = { id: data.nextId, ...row, created_at: tashkentNow() };
+      data.nextId += 1;
+      data.items.push(saved);
+      return saved;
+    });
+  }
+
+  const db = await getDb();
+  const result = db.prepare(`
+    INSERT INTO arizalar (name, phone, service, message, status, created_at)
+    VALUES (?, ?, ?, ?, 'yangi', datetime('now', '+5 hours'))
+  `).run(row.name, row.phone, row.service, row.message);
+
+  return { id: Number(result.lastInsertRowid), ...row };
 }
 
 /**
  * Barcha arizalarni qidiruv va filtrlash bilan olish
  */
-export function getAllArizalar({ status = '', search = '' } = {}) {
-  const db = getDb();
+export async function getAllArizalar({ status = '', search = '' } = {}) {
+  const term = search.trim().toLowerCase();
 
+  if (USE_BLOB) {
+    const { data } = await readBlob();
+    return data.items
+      .filter(item => !status || status === 'all' || item.status === status)
+      .filter(item => !term || [item.name, item.phone, item.message, item.service]
+        .some(field => String(field || '').toLowerCase().includes(term)))
+      .sort((a, b) => b.id - a.id);
+  }
+
+  const db = await getDb();
   let query = `SELECT * FROM arizalar WHERE 1=1`;
   const params = [];
 
@@ -90,67 +163,64 @@ export function getAllArizalar({ status = '', search = '' } = {}) {
     params.push(status);
   }
 
-  if (search && search.trim() !== '') {
+  if (term) {
     query += ` AND (name LIKE ? OR phone LIKE ? OR message LIKE ? OR service LIKE ?)`;
-    const term = `%${search.trim()}%`;
-    params.push(term, term, term, term);
+    const like = `%${search.trim()}%`;
+    params.push(like, like, like, like);
   }
 
   query += ` ORDER BY id DESC`;
-
-  const stmt = db.prepare(query);
-  return stmt.all(...params);
+  return db.prepare(query).all(...params);
 }
 
 /**
  * Ariza statusini yangilash ('yangi', 'boglanildi', 'bajarildi', 'rad_etildi')
  */
-export function updateArizaStatus(id, status) {
-  const db = getDb();
-  const stmt = db.prepare(`
-    UPDATE arizalar 
-    SET status = ? 
-    WHERE id = ?
-  `);
-  const result = stmt.run(status, Number(id));
+export async function updateArizaStatus(id, status) {
+  if (USE_BLOB) {
+    return mutateBlob(data => {
+      const item = data.items.find(i => i.id === Number(id));
+      if (!item) return false;
+      item.status = status;
+      return true;
+    });
+  }
+
+  const db = await getDb();
+  const result = db.prepare(`UPDATE arizalar SET status = ? WHERE id = ?`).run(status, Number(id));
   return result.changes > 0;
 }
 
 /**
  * Arizani o'chirish
  */
-export function deleteAriza(id) {
-  const db = getDb();
-  const stmt = db.prepare(`
-    DELETE FROM arizalar 
-    WHERE id = ?
-  `);
-  const result = stmt.run(Number(id));
+export async function deleteAriza(id) {
+  if (USE_BLOB) {
+    return mutateBlob(data => {
+      const before = data.items.length;
+      data.items = data.items.filter(i => i.id !== Number(id));
+      return data.items.length < before;
+    });
+  }
+
+  const db = await getDb();
+  const result = db.prepare(`DELETE FROM arizalar WHERE id = ?`).run(Number(id));
   return result.changes > 0;
 }
 
 /**
  * Dashboard uchun statistika
  */
-export function getStats() {
-  const db = getDb();
-
-  const total = db.prepare(`SELECT COUNT(*) as count FROM arizalar`).get().count;
-  const yangi = db.prepare(`SELECT COUNT(*) as count FROM arizalar WHERE status = 'yangi'`).get().count;
-  const boglanildi = db.prepare(`SELECT COUNT(*) as count FROM arizalar WHERE status = 'boglanildi'`).get().count;
-  const bajarildi = db.prepare(`SELECT COUNT(*) as count FROM arizalar WHERE status = 'bajarildi'`).get().count;
-  const bugun = db.prepare(`
-    SELECT COUNT(*) as count 
-    FROM arizalar 
-    WHERE date(created_at) = date('now', '+5 hours')
-  `).get().count;
+export async function getStats() {
+  const items = await getAllArizalar();
+  const today = tashkentNow().slice(0, 10);
+  const count = s => items.filter(i => i.status === s).length;
 
   return {
-    total: Number(total),
-    yangi: Number(yangi),
-    boglanildi: Number(boglanildi),
-    bajarildi: Number(bajarildi),
-    bugun: Number(bugun)
+    total: items.length,
+    yangi: count('yangi'),
+    boglanildi: count('boglanildi'),
+    bajarildi: count('bajarildi'),
+    bugun: items.filter(i => String(i.created_at || '').slice(0, 10) === today).length
   };
 }
-

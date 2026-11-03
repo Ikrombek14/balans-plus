@@ -91,7 +91,7 @@ export default async function handler(req, res) {
     // 5. SQL Ma'lumotlar bazasiga saqlash
     let savedRow = null;
     try {
-      savedRow = insertAriza({
+      savedRow = await insertAriza({
         name: name.trim(),
         phone: phone.trim(),
         service: formattedService,
