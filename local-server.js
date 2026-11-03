@@ -1,7 +1,7 @@
 /**
  * Balans Plus - Mahalliy (Local) Server
  * Node.js da hech qanday qo'shimcha npm o'rnatmasdan ishga tushirish uchun
- * Buyruq: node server.js
+ * Buyruq: node local-server.js (faqat lokal; Vercel bu faylni ishlatmaydi)
  */
 
 import http from 'node:http';
